@@ -1,14 +1,14 @@
 # prometheus.yml
 global:
-  scrape_interval: 15s # Busca dados a cada 15 segundos
+  scrape_interval: 5s
 
 scrape_configs:
+  - job_name: 'app-votacao'
+    static_configs:
+      - targets: ['app-votacao:5000']
+
   - job_name: 'prometheus'
     static_configs:
-      - targets: ['localhost:9090']
+      - targets: ['prometheus:9090']
 
-  - job_name: 'node-exporter' # Nosso alvo de infraestrutura
-    static_configs:
-      - targets: ['node-exporter:9100']
 
-      

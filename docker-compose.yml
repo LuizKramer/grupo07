@@ -30,9 +30,13 @@ services:
       - "3000:3000"
     networks:
       - rede-votacao
+    volumes:
+      - grafana-data:/var/lib/grafana
     depends_on:
       - prometheus
 
+volumes:
+  grafana-data:
 networks:
   rede-votacao:
     driver: bridge
