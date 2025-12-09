@@ -1,0 +1,34 @@
+stages:
+  - test
+  - build
+
+test:syntax:
+  stage: test
+  image: python:3.9-slim
+  script:
+    - echo "Verificando sintaxe do código Python..."
+    - python -m py_compile app.py
+    - echo "Sintaxe do app.py verificada com sucesso!"
+
+
+test:dependencies:
+  stage: test
+  image: python:3.9-slim
+  script:
+    - echo "Verificando instalação de dependências..."
+    - pip install --no-cache-dir -r requirements.txt
+    - echo " Dependências instaladas com sucesso!"
+
+build:docker:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker info
+  script:
+    - echo "Construindo imagem Docker da aplicação..."
+    - docker build -t app-votacao:$CI_COMMIT_SHORT_SHA .
+    - docker build -t app-votacao:latest .
+    - echo "Container construído com sucesso!"
+    - docker images | grep app-votacao
